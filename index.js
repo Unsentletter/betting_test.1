@@ -5,6 +5,11 @@ const fn = require('./functions');
 
 getStream(stream, {encoding: 'utf8'}).then(stream => {
 
+  if(!stream) {
+    console.log('No data entered');
+    return;
+  }
+
   const data = stream.split('\n');
   const bets = data.map(b => {
     const bet = b.split(':');
@@ -32,8 +37,6 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
   const second = fn.getResults(data).second;
   const third = fn.getResults(data).third;
 
-  console.log(fn.getResults(data));
-
   for (let i=0; i < bets.length; i++) {
     if (bets[i].type === 'W') {
       winnerPool = winNum += parseInt(bets[i].amount);
@@ -58,6 +61,9 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
   }
 
   let placePrizePool = parseInt(fn.poolMinusCommission(placePool, placeCommission)) / 3;
+
+  console.log(placingBets1);
+  console.log(placePrizePool);
 
   let winningDivs = fn.calculateDivs(winningBets, fn.poolMinusCommission(winnerPool, winCommission)).toFixed(2);
   let placeDivs1 = fn.calculateDivs(placingBets1, placePrizePool).toFixed(2);

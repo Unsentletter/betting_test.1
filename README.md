@@ -2,7 +2,7 @@
 
 1. Clone repo
 2. cd into folder
-3. enter `node index.js` into the terminal
+3. enter `npm start` into the terminal
 
 To run tests enter `npm test` into terminal
 
