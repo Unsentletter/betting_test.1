@@ -83,7 +83,7 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
     const percentageOfPool = remainingPool * percentage;
     return percentageOfPool / payingBets[0].amount;
   }
-  
+
   let winnerPrizePool = poolMinusComission(winnerPool, takeCommission(winnerPool, winCommission));
   let placePrizePool = parseInt(poolMinusComission(placePool, takeCommission(placePool, placeCommission))) / 3;
   let exactaPrizePool = poolMinusComission(exactaPool, takeCommission(exactaPool, exactaCommission));
