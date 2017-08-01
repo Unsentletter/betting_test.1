@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.1.0",
     "get-stdin": "^5.0.1",
-    "get-stream": "^3.0.0"
+    "get-stream": "^3.0.0",
+    "mocha": "^3.5.0"
   }
 }

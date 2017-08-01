@@ -79,9 +79,9 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
   }
 
   let placePrizePool = parseInt(poolMinusComission(placePool, placeCommission)) / 3;
-  
+
   let winningDivs = calculateDivs(winningBets, poolMinusComission(winnerPool, winCommission)).toFixed(2);
-  let placeDivs1 = calculateDivs(placingBets1, 189).toFixed(2);
+  let placeDivs1 = calculateDivs(placingBets1, placePrizePool).toFixed(2);
   let placeDivs2 = calculateDivs(placingBets2, placePrizePool).toFixed(2);
   let placeDivs3 = calculateDivs(placingBets3, placePrizePool).toFixed(2);
   let exactaDivs = calculateDivs(exactaBets, poolMinusComission(exactaPool, exactaCommission)).toFixed(2);
