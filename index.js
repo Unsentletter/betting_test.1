@@ -69,12 +69,8 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
     }
   }
 
-  function takeCommission(pool, commission) {
-    return pool * commission;
-  }
-
   function poolMinusComission(pool, commission) {
-    return pool - commission;
+    return pool - (pool * commission);
   }
 
   function calculateDivs(payingBets, remainingPool) {
@@ -84,20 +80,19 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
     return percentageOfPool / payingBets[0].amount;
   }
 
-  let winnerPrizePool = poolMinusComission(winnerPool, takeCommission(winnerPool, winCommission));
-  let placePrizePool = parseInt(poolMinusComission(placePool, takeCommission(placePool, placeCommission))) / 3;
-  let exactaPrizePool = poolMinusComission(exactaPool, takeCommission(exactaPool, exactaCommission));
-  let winningDivs = calculateDivs(winningBets, winnerPrizePool).toFixed(2);
+  let placePrizePool = parseInt(poolMinusComission(placePool, placeCommission)) / 3;
+
+  let winningDivs = calculateDivs(winningBets, poolMinusComission(winnerPool, winCommission)).toFixed(2);
   let placeDivs1 = calculateDivs(placingBets1, placePrizePool).toFixed(2);
   let placeDivs2 = calculateDivs(placingBets2, placePrizePool).toFixed(2);
   let placeDivs3 = calculateDivs(placingBets3, placePrizePool).toFixed(2);
-  let exactaDivs = calculateDivs(exactaBets, exactaPrizePool).toFixed(2);
+  let exactaDivs = calculateDivs(exactaBets, poolMinusComission(exactaPool, exactaCommission)).toFixed(2);
 
-  process.stdout.write(String(`Win:${first}:${winningDivs}\n`));
-  process.stdout.write(String(`Place:${first}:${placeDivs1}\n`));
-  process.stdout.write(String(`Place:${second}:${placeDivs2}\n`));
-  process.stdout.write(String(`Place:${third}:${placeDivs3}\n`));
-  process.stdout.write(String(`Exacta:${first},${second}:${exactaDivs}\n`));
+  process.stdout.write(String(`Win:${first}:$${winningDivs}\n`));
+  process.stdout.write(String(`Place:${first}:$${placeDivs1}\n`));
+  process.stdout.write(String(`Place:${second}:$${placeDivs2}\n`));
+  process.stdout.write(String(`Place:${third}:$${placeDivs3}\n`));
+  process.stdout.write(String(`Exacta:${first},${second}:$${exactaDivs}\n`));
 
 
 });
