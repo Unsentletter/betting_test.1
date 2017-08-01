@@ -17,7 +17,7 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
   const winCommission = 0.15;
   const placeCommission = 0.12;
   const exactaCommission = 0.18;
-  let winnerPool, placePool, placePool2, placePool3, exactaPool;
+  let winnerPool, placePool, exactaPool;
   let winningBets = [];
   let placingBets1 = [];
   let placingBets2 = [];
@@ -67,7 +67,7 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
     }
   }
 
-  function poolMinusComission(pool, commission) {
+  function poolMinusCommission(pool, commission) {
     return pool - (pool * commission);
   }
 
@@ -78,15 +78,18 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
     return percentageOfPool / payingBets[0].amount;
   }
 
-  let placePrizePool = parseInt(poolMinusComission(placePool, placeCommission)) / 3;
+  let placePrizePool = parseInt(poolMinusCommission(placePool, placeCommission)) / 3;
 
-  let winningDivs = calculateDivs(winningBets, poolMinusComission(winnerPool, winCommission)).toFixed(2);
+  let winningDivs = calculateDivs(winningBets, poolMinusCommission(winnerPool, winCommission)).toFixed(2);
   let placeDivs1 = calculateDivs(placingBets1, placePrizePool).toFixed(2);
   let placeDivs2 = calculateDivs(placingBets2, placePrizePool).toFixed(2);
   let placeDivs3 = calculateDivs(placingBets3, placePrizePool).toFixed(2);
-  let exactaDivs = calculateDivs(exactaBets, poolMinusComission(exactaPool, exactaCommission)).toFixed(2);
+  let exactaDivs = calculateDivs(exactaBets, poolMinusCommission(exactaPool, exactaCommission)).toFixed(2);
 
   process.stdout.write(String(`Win:${first}:$${winningDivs}\nPlace:${first}:$${placeDivs1}\nPlace:${second}:$${placeDivs2}\nPlace:${third}:$${placeDivs3}\nExacta:${first},${second}:$${exactaDivs}\n`));
 
+  module.exports = {
+    poolMinusCommission
+  };
 
 });
