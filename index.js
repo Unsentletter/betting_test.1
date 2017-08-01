@@ -1,6 +1,7 @@
 const fs = require('fs');
 const getStream = require('get-stream');
 const stream = fs.createReadStream('data.txt');
+const fn = require('./functions');
 
 getStream(stream, {encoding: 'utf8'}).then(stream => {
 
@@ -27,22 +28,11 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
   let placeNum = 0;
   let exactaNum = 0;
 
-  const first = getResults(data).first;
-  const second = getResults(data).second;
-  const third = getResults(data).third;
+  const first = fn.getResults(data).first;
+  const second = fn.getResults(data).second;
+  const third = fn.getResults(data).third;
 
-  function getResults(data) {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].includes('Result')) {
-        const grossResult = data[i].split(':');
-        return {
-          first: grossResult[1],
-          second: grossResult[2],
-          third: grossResult[3]
-        }
-      }
-    }
-  }
+  console.log(fn.getResults(data));
 
   for (let i=0; i < bets.length; i++) {
     if (bets[i].type === 'W') {
@@ -67,29 +57,14 @@ getStream(stream, {encoding: 'utf8'}).then(stream => {
     }
   }
 
-  function poolMinusCommission(pool, commission) {
-    return pool - (pool * commission);
-  }
+  let placePrizePool = parseInt(fn.poolMinusCommission(placePool, placeCommission)) / 3;
 
-  function calculateDivs(payingBets, remainingPool) {
-    const pool = payingBets.reduce((sum, bet) => sum + bet.amount, 0);
-    const percentage = payingBets[0].amount / pool;
-    const percentageOfPool = remainingPool * percentage;
-    return percentageOfPool / payingBets[0].amount;
-  }
-
-  let placePrizePool = parseInt(poolMinusCommission(placePool, placeCommission)) / 3;
-
-  let winningDivs = calculateDivs(winningBets, poolMinusCommission(winnerPool, winCommission)).toFixed(2);
-  let placeDivs1 = calculateDivs(placingBets1, placePrizePool).toFixed(2);
-  let placeDivs2 = calculateDivs(placingBets2, placePrizePool).toFixed(2);
-  let placeDivs3 = calculateDivs(placingBets3, placePrizePool).toFixed(2);
-  let exactaDivs = calculateDivs(exactaBets, poolMinusCommission(exactaPool, exactaCommission)).toFixed(2);
+  let winningDivs = fn.calculateDivs(winningBets, fn.poolMinusCommission(winnerPool, winCommission)).toFixed(2);
+  let placeDivs1 = fn.calculateDivs(placingBets1, placePrizePool).toFixed(2);
+  let placeDivs2 = fn.calculateDivs(placingBets2, placePrizePool).toFixed(2);
+  let placeDivs3 = fn.calculateDivs(placingBets3, placePrizePool).toFixed(2);
+  let exactaDivs = fn.calculateDivs(exactaBets, fn.poolMinusCommission(exactaPool, exactaCommission)).toFixed(2);
 
   process.stdout.write(String(`Win:${first}:$${winningDivs}\nPlace:${first}:$${placeDivs1}\nPlace:${second}:$${placeDivs2}\nPlace:${third}:$${placeDivs3}\nExacta:${first},${second}:$${exactaDivs}\n`));
-
-  module.exports = {
-    poolMinusCommission
-  };
 
 });

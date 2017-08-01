@@ -1,11 +1,15 @@
-const expect = require('expect');
-const index = require('../index');
+const expect = require('chai').expect;
+const should = require('chai').should;
+const fn = require('../functions');
 
-describe('testing PoolMinusCommission', () => {
+describe('testing PoolMinusCommission fn', () => {
   it('should return a value', () => {
-    console.log('index', index);
-
-
-    expect(index.poolMinusCommission(600, 60)).to.equal(540);
+    expect(fn.poolMinusCommission(600, 0.10)).to.be.equal(540);
   })
 });
+
+describe('testing getResults fn', () => {
+  it('should return an object', () => {
+    expect(fn.getResults()).to.
+  })
+})
